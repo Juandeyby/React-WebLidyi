@@ -27,8 +27,8 @@ jobs:
       - name: Clean remote directory before deploy
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.HOST }}
-          username: juandeyby
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: 22
           script: |
@@ -37,8 +37,8 @@ jobs:
       - name: Upload files via SCP
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.HOST }}
-          username: juandeyby
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: 22
           source: "build/*"
