@@ -1,4 +1,4 @@
-name: Build and Deploy React App with Docker
+name: Build and Deploy React App
 
 on:
   push:
@@ -12,28 +12,22 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Build Docker image
-      run: docker build -t react-weblidyi .
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
 
-    - name: Save Docker image to archive
-      run: docker save react-weblidyi -o image.tar
+    - name: Install dependencies
+      run: npm install
 
-    - name: Copy image to server via SSH
+    - name: Build React App
+      run: npm run build
+
+    - name: Copy build to server
       uses: appleboy/scp-action@v0.1.4
       with:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        source: "image.tar"
-        target: "~/deploy/react-weblidyi"
-
-    - name: Load and run container via SSH
-      uses: appleboy/ssh-action@v0.1.10
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          docker load -i ~/deploy/react-weblidyi/image.tar
-          docker stop weblidyi || true && docker rm weblidyi || true
-          docker run -d --name weblidyi -p 80:80 react-weblidyi
+        source: "build/*"
+        target: "/var/www/html/web"
