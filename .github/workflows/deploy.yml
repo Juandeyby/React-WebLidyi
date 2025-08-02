@@ -33,17 +33,23 @@ jobs:
           port: 22
           script: |
             rm -rf /var/www/html/web/*
-            
-      - name: Upload files via SCP
+
+      - name: Move build content to temp folder
+        run: |
+          mkdir temp_build
+          cp -r build/* temp_build/
+          
+      - name: Upload files via SCP (clean way)
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          source: "./build/."
+          source: "temp_build/*"
           target: "/var/www/html/web"
           overwrite: true
           debug: true
+
 
 
