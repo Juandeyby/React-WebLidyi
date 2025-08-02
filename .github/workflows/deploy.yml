@@ -3,7 +3,7 @@ name: Deploy React App to VPS
 on:
   push:
     branches:
-      - main  # o la rama que uses para producción
+      - master  # o la rama que uses para producción
 
 jobs:
   deploy:
