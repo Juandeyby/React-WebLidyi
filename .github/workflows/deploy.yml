@@ -33,7 +33,7 @@ jobs:
           port: 22
           script: |
             rm -rf /var/www/html/web/*
-
+            
       - name: Upload files via SCP
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -41,8 +41,9 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          source: "build/**"
+          source: "./build/."
           target: "/var/www/html/web"
           overwrite: true
           debug: true
+
 
