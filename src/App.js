@@ -18,7 +18,7 @@ function App() {
           Learn React
         </a>
       </header>
-	  <h1>Hola Mundo desde React</h1>
+	  <h1>I would like to implement React :D</h1>
 	  <p>Ready for implementing</p>
     </div>
   );
