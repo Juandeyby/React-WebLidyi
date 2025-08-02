@@ -1,26 +1,16 @@
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-	  <h1>I would like to implement React :D</h1>
-	  <p>Ready for implementing</p>
-    </div>
+      <div className="App">
+        <header className="App-header">
+          <h1>Radio en Vivo</h1>
+          <audio controls autoPlay>
+            <source src="https://lidyi.com/radio/stream.mp3" type="audio/mpeg" />
+            Tu navegador no soporta el elemento de audio.
+          </audio>
+        </header>
+      </div>
   );
 }
 
