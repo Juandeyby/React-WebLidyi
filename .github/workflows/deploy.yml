@@ -1,35 +1,47 @@
-name: Deploy React App to Ubuntu Server
+name: Deploy React App to VPS
 
 on:
   push:
     branches:
-      - master
+      - main  # o la rama que uses para producción
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout source code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 18
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Build React app
-      run: npm run build
+      - name: Build React app
+        run: npm run build
 
-    - name: Deploy via SSH
-      uses: appleboy/scp-action@v0.1.7
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        source: "build/*"
-        target: "/var/www/html/web"
-        strip_components: 1  # para no copiar /build/build/*
+      - name: Clean remote directory before deploy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: juandeyby
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: |
+            rm -rf /var/www/html/web/*
+
+      - name: Upload files via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: juandeyby
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          source: "build/*"
+          target: "/var/www/html/web"
+          overwrite: true
+          debug: true
